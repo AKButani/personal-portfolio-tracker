@@ -1,0 +1,11 @@
+**/node_modules
+backend/.venv
+**/__pycache__
+**/investment.db
+frontend/dist
+.git
+.gitignore
+.claude/
+.mcp.json
+.playwright-mcp/
+*.log
