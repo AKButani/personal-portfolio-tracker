@@ -61,7 +61,7 @@ export default function InstrumentPage() {
   }
   if (!data) return <div className="state">Loading…</div>
 
-  const { instrument, prices, buys } = data
+  const { instrument, prices, buys, transactions } = data
   const currency = mode === 'native' ? instrument.currency : 'CHF'
   const avgCost = mode === 'native' ? data.avg_cost_native : data.avg_cost_chf
   const last = prices.length ? prices[prices.length - 1][mode] : null
@@ -74,6 +74,9 @@ export default function InstrumentPage() {
     (!win.start || d >= win.start) && (!win.end || d <= win.end)
   const chartPrices = prices.filter((p) => inWin(p.date))
   const chartBuys = buys.filter((b) => inWin(b.date))
+  const chartSells = transactions.filter(
+    (t) => t.type === 'sell' && inWin(t.date),
+  )
   const value = last != null ? last * data.units : null
   const ret = avgCost && last != null ? (last - avgCost) / avgCost : null
   const owner = personId != null ? people.find((p) => p.id === personId)?.name : null
@@ -158,11 +161,53 @@ export default function InstrumentPage() {
         <InstrumentChart
           prices={chartPrices}
           buys={chartBuys}
+          sells={chartSells}
           avgCost={avgCost}
           field={mode}
           currency={currency}
         />
       )}
+
+      <div className="card">
+        <h2>Transactions</h2>
+        {transactions.length === 0 ? (
+          <div className="empty">No transactions.</div>
+        ) : (
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th className="num">Quantity</th>
+                <th className="num">Price</th>
+                <th className="num">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[...transactions].reverse().map((t, i) => {
+                const price = t[mode]
+                const value =
+                  price != null && t.quantity != null ? price * t.quantity : null
+                return (
+                  <tr key={`${t.date}-${i}`}>
+                    <td>{t.date}</td>
+                    <td>{t.type[0].toUpperCase() + t.type.slice(1)}</td>
+                    <td className="num">
+                      {t.quantity == null ? '—' : formatNumber(t.quantity)}
+                    </td>
+                    <td className="num">
+                      {price == null ? '—' : formatMoney(price, currency)}
+                    </td>
+                    <td className="num">
+                      {value == null ? '—' : formatMoney(value, currency)}
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   )
 }

@@ -513,16 +513,26 @@ def instrument_history(session: Session, ticker: str, person_id: int | None = No
 
     txns = session.exec(select(Transaction).where(Transaction.instrument_id == instrument.id)).all()
     buys = []
+    transactions = []
     cost_native = 0.0
     cost_chf = 0.0
     buy_units = 0.0
     for tx in sorted(txns, key=lambda t: t.date):
         if account_ids is not None and tx.account_id not in account_ids:
             continue
+        fx = market.fx_on(tx.currency, tx.date)
+        chf = tx.price * fx if (tx.price is not None and fx) else None
+        transactions.append(
+            {
+                "date": tx.date.isoformat(),
+                "type": tx.type,
+                "quantity": tx.quantity,
+                "native": round(tx.price, 4) if tx.price is not None else None,
+                "chf": round(chf, 4) if chf is not None else None,
+            }
+        )
         if tx.type != "buy" or tx.quantity is None or tx.price is None:
             continue
-        fx = market.fx_on(tx.currency, tx.date)
-        chf = tx.price * fx if fx else None
         buys.append(
             {
                 "date": tx.date.isoformat(),
@@ -553,6 +563,7 @@ def instrument_history(session: Session, ticker: str, person_id: int | None = No
         },
         "prices": prices,
         "buys": buys,  # sells ignored for avg cost / markers in v1 (none in seed)
+        "transactions": transactions,  # full ledger for this instrument (all types)
         "avg_cost_native": round(cost_native / buy_units, 4) if buy_units else None,
         "avg_cost_chf": round(cost_chf / buy_units, 4) if buy_units else None,
         "units": units,

@@ -10423,6 +10423,22 @@
           "chf": 96.8
         }
       ],
+      "transactions": [
+        {
+          "date": "2024-01-15",
+          "type": "buy",
+          "quantity": 10.0,
+          "native": 100.0,
+          "chf": 90.0
+        },
+        {
+          "date": "2024-03-15",
+          "type": "buy",
+          "quantity": 5.0,
+          "native": 110.0,
+          "chf": 96.8
+        }
+      ],
       "avg_cost_native": 103.3333,
       "avg_cost_chf": 92.2667,
       "units": 15.0
@@ -10465,6 +10481,22 @@
           "chf": 96.8
         }
       ],
+      "transactions": [
+        {
+          "date": "2024-01-15",
+          "type": "buy",
+          "quantity": 10.0,
+          "native": 100.0,
+          "chf": 90.0
+        },
+        {
+          "date": "2024-03-15",
+          "type": "buy",
+          "quantity": 5.0,
+          "native": 110.0,
+          "chf": 96.8
+        }
+      ],
       "avg_cost_native": 103.3333,
       "avg_cost_chf": 92.2667,
       "units": 15.0
@@ -10494,6 +10526,7 @@
         }
       ],
       "buys": [],
+      "transactions": [],
       "avg_cost_native": null,
       "avg_cost_chf": null,
       "units": 0

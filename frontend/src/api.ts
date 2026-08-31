@@ -56,10 +56,19 @@ export interface BuyMarker {
   chf: number | null
 }
 
+export interface InstrumentTransaction {
+  date: string
+  type: string
+  quantity: number | null
+  native: number | null
+  chf: number | null
+}
+
 export interface InstrumentHistory {
   instrument: InstrumentMeta
   prices: PricePoint[]
   buys: BuyMarker[]
+  transactions: InstrumentTransaction[]
   avg_cost_native: number | null
   avg_cost_chf: number | null
   units: number

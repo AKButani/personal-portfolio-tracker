@@ -72,6 +72,36 @@ def test_networth_window_respects_bounds(session):
     assert (dates[1] - dates[0]).days == 1
 
 
+def test_instrument_history_includes_sells(session):
+    from models import Transaction
+
+    vt = next(i for i in session.exec(_all_instruments()).all() if i.id_value == "VT")
+    ibkr_id = session.exec(_all_txns()).first().account_id
+    session.add(
+        Transaction(account_id=ibkr_id, instrument_id=vt.id, date=date(2024, 4, 1),
+                    type="sell", quantity=3, price=115, currency="USD")
+    )
+    session.commit()
+
+    hist = valuation.instrument_history(session, "VT")
+    types = [t["type"] for t in hist["transactions"]]
+    assert types == ["buy", "buy", "sell"]  # ascending by date
+    sell = hist["transactions"][-1]
+    assert sell["quantity"] == 3
+    assert sell["native"] == 115
+    assert sell["chf"] is not None  # FX-converted per-unit price
+    # Sells still excluded from avg cost / buy markers.
+    assert len(hist["buys"]) == 2
+
+
+def _all_instruments():
+    from sqlmodel import select
+
+    from models import Instrument
+
+    return select(Instrument)
+
+
 def test_performance_rebased_starts_at_zero(session):
     series = valuation.performance_history(session, date(2024, 3, 1), date(2024, 6, 1))
     first = series[0]
