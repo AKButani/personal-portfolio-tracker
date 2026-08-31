@@ -293,6 +293,7 @@ def portfolio_valuation(
                         "account_id": acc.id,
                         "instrument_id": instrument_id,
                         "instrument": inst.name,
+                        "owner": people[acc.owner_id].name,
                         "ticker": inst.id_value,
                         "units": qty,
                         "price": price,

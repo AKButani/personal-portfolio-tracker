@@ -29,6 +29,7 @@ export interface Holding {
   account_id: number
   instrument_id: number
   instrument: string
+  owner: string
   ticker: string
   units: number
   price: number | null

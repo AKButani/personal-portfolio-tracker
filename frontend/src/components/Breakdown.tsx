@@ -109,7 +109,7 @@ export default function Breakdown({
                       className="holding-link"
                       to={`/instrument/${encodeURIComponent(h.ticker)}${personQuery}`}
                     >
-                      {h.instrument}
+                      {personId == null ? `${h.instrument} (${h.owner})` : h.instrument}
                     </Link>
                   </td>
                   <td className="num">{formatNumber(h.units)}</td>
