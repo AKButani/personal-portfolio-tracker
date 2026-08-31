@@ -1,0 +1,196 @@
+# Example seed data (fictional). Copy this to seed.yaml, then load it:
+#   cp seed.example.yaml seed.yaml
+#   uv run python seed.py
+#   uv run python ingest.py    # fetch EOD prices + FX
+#
+# seed.yaml is git-ignored so your real portfolio never gets committed.
+#
+# Format: people -> accounts -> (instruments, transactions, pms_snapshots).
+# Reference people/instruments/accounts by their `key` (local to this file).
+# All names and amounts are made up; instrument identifiers are real public
+# tickers/ISINs so end-of-day prices can be fetched by ingest.py (Yahoo Finance).
+
+people:
+  - key: anna
+    name: Anna Meier
+  - key: thomas
+    name: Thomas Meier
+  - key: lena
+    name: Lena Meier
+
+instruments:
+  - key: vt
+    name: Vanguard Total World Stock ETF
+    id_type: ticker
+    id_value: VT
+    currency: USD
+
+  - key: akb_growth
+    name: AKB Wachstum CHF ESG Fokus (T)
+    id_type: ticker
+    id_value: 0P0001DJXH.SW
+    currency: CHF
+
+  - key: sc_largecap_ch
+    name: Swisscanto (CH) Index Equity Fund Large Caps Switzerland
+    id_type: isin
+    id_value: CH0215804714
+    currency: CHF
+
+  - key: sc_world_exch
+    name: Swisscanto (CH) IPF I Index Equity Fund World ex CH
+    id_type: isin
+    id_value: CH0117044948
+    currency: CHF
+
+  - key: sc_em
+    name: Swisscanto (CH) Index Equity Fund Emerging Markets
+    id_type: isin
+    id_value: CH0117044971
+    currency: CHF
+
+accounts:
+  # Public brokerage in USD — dollar-cost-averaged into a single world ETF.
+  - key: anna_ibkr
+    name: Anna IBKR
+    platform: IBKR
+    owner: anna
+    currency: USD
+    kind: public
+    transactions:
+      - date: 2024-02-15
+        type: buy
+        instrument: vt
+        quantity: 20
+        price: 107.50
+        currency: USD
+      - date: 2024-08-20
+        type: buy
+        instrument: vt
+        quantity: 15
+        price: 117.80
+        currency: USD
+      - date: 2025-02-10
+        type: buy
+        instrument: vt
+        quantity: 20
+        price: 122.40
+        currency: USD
+      - date: 2025-09-05
+        type: buy
+        instrument: vt
+        quantity: 15
+        price: 133.60
+        currency: USD
+      - date: 2026-02-12
+        type: buy
+        instrument: vt
+        quantity: 10
+        price: 150.10
+        currency: USD
+
+  # Public Swiss cantonal-bank account holding one CHF fund, with a small trim.
+  - key: thomas_akb
+    name: Thomas AKB
+    platform: AKB
+    owner: thomas
+    currency: CHF
+    kind: public
+    transactions:
+      - date: 2024-03-10
+        type: buy
+        instrument: akb_growth
+        quantity: 200
+        price: 106.90
+        currency: CHF
+      - date: 2024-11-15
+        type: buy
+        instrument: akb_growth
+        quantity: 100
+        price: 118.20
+        currency: CHF
+      - date: 2025-12-16
+        type: sell
+        instrument: akb_growth
+        quantity: 20
+        price: 127.30
+        currency: CHF
+
+  # Swiss 3a pillar — periodic buys across a few index funds plus one rebalance.
+  - key: anna_finpension
+    name: Anna Finpension 3a
+    platform: Finpension
+    owner: anna
+    currency: CHF
+    kind: public
+    transactions:
+      - date: 2024-04-02
+        type: buy
+        instrument: sc_largecap_ch
+        quantity: 30
+        price: 150.20
+        currency: CHF
+      - date: 2024-04-02
+        type: buy
+        instrument: sc_world_exch
+        quantity: 10
+        price: 330.40
+        currency: CHF
+      - date: 2025-01-15
+        type: buy
+        instrument: sc_largecap_ch
+        quantity: 20
+        price: 165.00
+        currency: CHF
+      - date: 2025-01-15
+        type: buy
+        instrument: sc_em
+        quantity: 25
+        price: 129.50
+        currency: CHF
+      - date: 2025-09-10
+        type: buy
+        instrument: sc_world_exch
+        quantity: 8
+        price: 360.00
+        currency: CHF
+      - date: 2026-03-05
+        type: sell
+        instrument: sc_em
+        quantity: 5
+        price: 150.00
+        currency: CHF
+
+  # Portfolio Management Service — no public prices, so value is entered manually
+  # as dated snapshots; contributions record the money paid in (the cost basis).
+  - key: thomas_pms
+    name: Thomas PMS
+    platform: ACME Wealth PMS
+    owner: thomas
+    currency: CHF
+    kind: pms
+    transactions:
+      - date: 2024-01-20
+        type: contribution
+        amount: 50000
+        currency: CHF
+      - date: 2025-01-20
+        type: contribution
+        amount: 20000
+        currency: CHF
+    pms_snapshots:
+      - date: 2024-06-30
+        value: 51500
+        currency: CHF
+      - date: 2024-12-31
+        value: 55200
+        currency: CHF
+      - date: 2025-06-30
+        value: 72800
+        currency: CHF
+      - date: 2025-12-31
+        value: 79100
+        currency: CHF
+      - date: 2026-06-30
+        value: 85400
+        currency: CHF

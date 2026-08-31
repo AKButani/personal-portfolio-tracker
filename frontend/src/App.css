@@ -1,0 +1,307 @@
+/* Dashboard layout & components. */
+
+.dash-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.dash-header .as-of {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* Filter row — one row, above everything it scopes. */
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.filters label {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.select {
+  font: inherit;
+  font-size: 14px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-1);
+  color: var(--text-primary);
+}
+
+/* Segmented toggle (weekly / monthly). */
+.seg {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.seg button {
+  font: inherit;
+  font-size: 14px;
+  padding: 6px 12px;
+  border: 0;
+  background: var(--surface-1);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.seg button[aria-pressed='true'] {
+  background: var(--series-1);
+  color: #fff;
+}
+
+/* Duration picker for the plots — sits above the charts, scopes only them. */
+.duration {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.custom-range {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* Card surface — used by the chart and each panel. */
+.card {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* Stat-tile KPI row. */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+@media (max-width: 720px) {
+  .tiles {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.tile {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+.tile-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+.tile-value {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+}
+.tile-sub {
+  font-size: 13px;
+  margin-top: 4px;
+  color: var(--text-muted);
+}
+
+.pos {
+  color: var(--good);
+}
+.neg {
+  color: var(--bad);
+}
+.muted {
+  color: var(--text-muted);
+}
+
+/* Two-column breakdown. */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 860px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Person cards inside the breakdown. */
+.person-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+}
+.person-card:first-of-type {
+  border-top: 0;
+}
+.person-card .who {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+.person-card .val {
+  text-align: right;
+}
+.person-card .val .big {
+  font-weight: 600;
+}
+
+.swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex: none;
+}
+
+/* Tables. */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.table th {
+  text-align: left;
+  font-weight: 500;
+  color: var(--text-muted);
+  font-size: 12px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.table td {
+  padding: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.table td.num,
+.table th.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.table tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Refetch: hold the previous render, dimmed — no skeleton, no jump. */
+.stale {
+  opacity: 0.5;
+  transition: opacity 0.15s;
+}
+
+.empty {
+  color: var(--text-muted);
+  font-size: 14px;
+  padding: 24px 0;
+  text-align: center;
+}
+.state {
+  padding: 48px 0;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* Holding row link. */
+.holding-link {
+  color: var(--series-1);
+  text-decoration: none;
+  font-weight: 500;
+}
+.holding-link:hover {
+  text-decoration: underline;
+}
+
+/* Header nav link (dashboard ⇄ manage). */
+.nav-link {
+  color: var(--series-1);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+/* Data-entry forms. */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 16px;
+}
+@media (max-width: 720px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.field label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.field input,
+.field select {
+  font: inherit;
+  font-size: 14px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-1);
+  color: var(--text-primary);
+}
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+.btn {
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 7px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--series-1);
+  color: #fff;
+  cursor: pointer;
+}
+.btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.form-msg {
+  font-size: 13px;
+}
+
+/* Instrument detail page. */
+.instrument-page .back {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+}
+.instrument-page .back:hover {
+  color: var(--text-primary);
+}
+.instrument-page .ticker {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 16px;
+  margin-left: 6px;
+}

@@ -1,0 +1,19 @@
+# Root-level ignores. Package-specific ignores live in backend/.gitignore and
+# frontend/.gitignore.
+
+# Dependencies (root dev tooling, e.g. concurrently)
+node_modules/
+
+# AI assistant / local tooling
+CLAUDE.md
+.claude/
+.mcp.json
+.playwright-mcp/
+
+# Logs
+*.log
+
+# OS / editor cruft
+.DS_Store
+.idea/
+.vscode/
